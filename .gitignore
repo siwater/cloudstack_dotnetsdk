@@ -1,0 +1,7 @@
+*.obj
+*.exe
+*.pdb
+*.suo
+CloudStack*/obj/*
+CloudStack*/bin/*
+

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17A9FE85-5623-469B-8041-F44CF404F3AE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CloudStack.SDK</RootNamespace>
+    <AssemblyName>CloudStack.SDK</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CODE_ANALYSIS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(SolutionDir)Version\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="APIListRequest.cs" />
+    <Compile Include="APIResponse.cs" />
+    <Compile Include="AsyncSupport.cs" />
+    <Compile Include="Client-Commands.cs" />
+    <Compile Include="AttachVolumeRequest.cs" />
+    <Compile Include="APIZonedListRequest.cs" />
+    <Compile Include="DetachVolumeRequest.cs" />
+    <Compile Include="ImpersonationContext.cs" />
+    <Compile Include="ListNetworkOfferingsRequest.cs" />
+    <Compile Include="ListVolumesRequest.cs" />
+    <Compile Include="CreateVolumeRequest.cs" />
+    <Compile Include="DeployVirtualMachinesRequest.cs" />
+    <Compile Include="ListServiceOfferingsRequest.cs" />
+    <Compile Include="ListSecurityGroupssRequest.cs" />
+    <Compile Include="ListNetworksRequest.cs" />
+    <Compile Include="ListDiskOfferingsRequest.cs" />
+    <Compile Include="ListZonesRequest.cs" />
+    <Compile Include="ListTemplatesRequest.cs" />
+    <Compile Include="ListVirtualMachinesRequest.cs" />
+    <Compile Include="SecurityGroupRule.cs" />
+    <Compile Include="APIRequest.cs" />
+    <Compile Include="AuthorizeSecurityGroupIngressRequest.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="APIErrorResult.cs" />
+    <Compile Include="CloudResource.cs" />
+    <Compile Include="CloudStackException.cs" />
+    <Compile Include="CreateSecurityGroupResponse.cs" />
+    <Compile Include="CreateSecurityGroupRequest.cs" />
+    <Compile Include="ListNetworksResponse.cs" />
+    <Compile Include="ListSecurityGroupsResponse.cs" />
+    <Compile Include="ListNetworkOfferingsResponse.cs" />
+    <Compile Include="ListDiskOfferingsResponse.cs" />
+    <Compile Include="ListServiceOfferingsResponse.cs" />
+    <Compile Include="ListTemplatesResponse.cs" />
+    <Compile Include="ListVirtualMachinesResponse.cs" />
+    <Compile Include="ListVolumesResponse.cs" />
+    <Compile Include="ListZonesResponse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolType.cs" />
+    <Compile Include="SecurityGroup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
