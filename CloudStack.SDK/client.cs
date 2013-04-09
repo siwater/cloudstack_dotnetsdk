@@ -196,6 +196,17 @@ namespace CloudStack.SDK
             this.sessionKey = response.Element("loginresponse").Element("sessionkey").Value;
         }
 
+        /// <summary>
+        /// An alternative authentication mechanism for the Cloudstack API requires the user to login (username/password) rather than
+        /// use the apiKey/secureKey combination. If apiKey and secretKey are present in the client session they will be used in
+        /// preference to this mechanism.
+        /// </summary>
+        /// <param name="userName">CloudStack user name</param>
+        /// <param name="password">ClousStack password</param>
+        /// <param name="hashPassword">Should an MD5 hash of the password be sent</param>
+        public void Login(string userName, SecureString password, bool hashPassword) {
+            this.Login(userName, SecureStringToString(password), hashPassword);
+        }
 
         public void Logout()
         {

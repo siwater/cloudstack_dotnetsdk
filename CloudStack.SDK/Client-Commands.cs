@@ -118,7 +118,12 @@ namespace CloudStack.SDK
         /// <returns>id of the new virtual machine</returns>
         public string DeployVirtualMachine(DeployVirtualMachineRequest request)
         {
-           return AsyncSupport.WaitForResourceIdFromAsyncJob(this, request);
+           XDocument response = SendRequest(request);
+           XElement id = response.Descendants("id").FirstOrDefault();
+           if (id == null || string.IsNullOrEmpty(id.Value)) {
+               throw new CloudStackException("Command failed to return resource id", request.ToString(), response);
+           }
+           return id.Value;
         }
 
         /// <summary>

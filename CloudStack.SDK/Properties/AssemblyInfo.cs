@@ -25,9 +25,14 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CloudStack.SDK")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("CloudStack .NET SDK")]
+[assembly: AssemblyDescription(".NET client side library for CLoudStack API")]
 [assembly: AssemblyConfiguration("")]
+
+[assembly: AssemblyVersion("2.02.0.0")]
+[assembly: AssemblyFileVersion("2.02.0.0")]
+[assembly: AssemblyCompany("The Apache Software Foundation")]
+[assembly: AssemblyCopyright("Copyright © The Apache Software Foundation 2013")]
 
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

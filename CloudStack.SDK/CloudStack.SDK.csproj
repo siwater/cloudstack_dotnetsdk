@@ -43,9 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$(SolutionDir)Version\SharedAssemblyInfo.cs">
-      <Link>Properties\SharedAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="APIListRequest.cs" />
     <Compile Include="APIResponse.cs" />
     <Compile Include="AsyncSupport.cs" />
