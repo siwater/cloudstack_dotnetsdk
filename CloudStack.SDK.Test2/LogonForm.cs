@@ -34,18 +34,26 @@ namespace CloudStack.SDK.Test2
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            Client client = new Client(new Uri(textBoxUrl.Text));
-            client.Login(textBoxUsername.Text, textBoxPassword.Text, true);
-            WriteToLogBox("Logged on to API");
 
-            ListZonesRequest request = new ListZonesRequest();
-            ListZonesResponse response = client.ListZones(request);
-            WriteToLogBox(response.ToString());          
+            try {
+                Client client = new Client(new Uri(textBoxUrl.Text));
+
+                WriteToLogBox("Sending logon command to API");
+                client.Login(textBoxUsername.Text, textBoxPassword.Text, textBoxDomainName.Text, checkBoxHashPassword.Checked);
+                WriteToLogBox("Logged on to API");
+
+                ListZonesRequest request = new ListZonesRequest();
+                ListZonesResponse response = client.ListZones(request);
+                WriteToLogBox(response.ToString());
+            } catch (Exception ex) {
+                WriteToLogBox("Exception: " + ex.Message);
+                WriteToLogBox(ex.ToString());
+            }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
     }
 }

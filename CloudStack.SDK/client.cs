@@ -185,13 +185,17 @@ namespace CloudStack.SDK
         /// </summary>
         /// <param name="userName">CloudStack user name</param>
         /// <param name="password">ClousStack password</param>
+        /// <param name="domainName">Optional CloudStack domain (may be null for root domain)</param>
         /// <param name="hashPassword">Should an MD5 hash of the password be sent</param>
-        public void Login(string userName, string password, bool hashPassword)
+        public void Login(string userName, string password, string domainName, bool hashPassword)
         {
             this.cookieContainer = new CookieContainer();
             APIRequest request = new APIRequest("login");
             request.Parameters["username"] = userName;
             request.Parameters["password"] = hashPassword ?  Hash(password) : password;
+            if (!string.IsNullOrEmpty(domainName)) {
+                request.Parameters["domain"] = domainName;
+            }
             XDocument response = this.SendRequest(request);
             this.sessionKey = response.Element("loginresponse").Element("sessionkey").Value;
         }
@@ -203,9 +207,10 @@ namespace CloudStack.SDK
         /// </summary>
         /// <param name="userName">CloudStack user name</param>
         /// <param name="password">ClousStack password</param>
+        /// <param name="domain">Optional CloudStack domain (may be null for root domain)</param>
         /// <param name="hashPassword">Should an MD5 hash of the password be sent</param>
-        public void Login(string userName, SecureString password, bool hashPassword) {
-            this.Login(userName, SecureStringToString(password), hashPassword);
+        public void Login(string userName, SecureString password, string domain, bool hashPassword) {
+            this.Login(userName, SecureStringToString(password), domain, hashPassword);
         }
 
         public void Logout()

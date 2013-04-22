@@ -32,25 +32,28 @@
             this.buttonOK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxLog = new System.Windows.Forms.RichTextBox();
+            this.labelDomain = new System.Windows.Forms.Label();
+            this.textBoxDomainName = new System.Windows.Forms.TextBox();
+            this.checkBoxHashPassword = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // textBoxUrl
             // 
-            this.textBoxUrl.Location = new System.Drawing.Point(80, 29);
+            this.textBoxUrl.Location = new System.Drawing.Point(94, 29);
             this.textBoxUrl.Name = "textBoxUrl";
             this.textBoxUrl.Size = new System.Drawing.Size(286, 20);
             this.textBoxUrl.TabIndex = 0;
             // 
             // textBoxUsername
             // 
-            this.textBoxUsername.Location = new System.Drawing.Point(80, 62);
+            this.textBoxUsername.Location = new System.Drawing.Point(94, 62);
             this.textBoxUsername.Name = "textBoxUsername";
             this.textBoxUsername.Size = new System.Drawing.Size(195, 20);
             this.textBoxUsername.TabIndex = 1;
             // 
             // textBoxPassword
             // 
-            this.textBoxPassword.Location = new System.Drawing.Point(80, 98);
+            this.textBoxPassword.Location = new System.Drawing.Point(94, 98);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.PasswordChar = '*';
             this.textBoxPassword.Size = new System.Drawing.Size(195, 20);
@@ -85,7 +88,7 @@
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(200, 298);
+            this.buttonOK.Location = new System.Drawing.Point(441, 378);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 6;
@@ -95,7 +98,7 @@
             // 
             // buttonCancel
             // 
-            this.buttonCancel.Location = new System.Drawing.Point(291, 298);
+            this.buttonCancel.Location = new System.Drawing.Point(532, 378);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 7;
@@ -105,17 +108,46 @@
             // 
             // textBoxLog
             // 
-            this.textBoxLog.Location = new System.Drawing.Point(15, 146);
+            this.textBoxLog.Location = new System.Drawing.Point(15, 235);
             this.textBoxLog.Name = "textBoxLog";
-            this.textBoxLog.Size = new System.Drawing.Size(351, 123);
+            this.textBoxLog.Size = new System.Drawing.Size(592, 123);
             this.textBoxLog.TabIndex = 8;
             this.textBoxLog.Text = "";
+            // 
+            // labelDomain
+            // 
+            this.labelDomain.AutoSize = true;
+            this.labelDomain.Location = new System.Drawing.Point(12, 134);
+            this.labelDomain.Name = "labelDomain";
+            this.labelDomain.Size = new System.Drawing.Size(72, 13);
+            this.labelDomain.TabIndex = 10;
+            this.labelDomain.Text = "Domain name";
+            // 
+            // textBoxDomainName
+            // 
+            this.textBoxDomainName.Location = new System.Drawing.Point(94, 134);
+            this.textBoxDomainName.Name = "textBoxDomainName";
+            this.textBoxDomainName.Size = new System.Drawing.Size(195, 20);
+            this.textBoxDomainName.TabIndex = 9;
+            // 
+            // checkBoxHashPassword
+            // 
+            this.checkBoxHashPassword.AutoSize = true;
+            this.checkBoxHashPassword.Location = new System.Drawing.Point(15, 184);
+            this.checkBoxHashPassword.Name = "checkBoxHashPassword";
+            this.checkBoxHashPassword.Size = new System.Drawing.Size(100, 17);
+            this.checkBoxHashPassword.TabIndex = 11;
+            this.checkBoxHashPassword.Text = "Hash Password";
+            this.checkBoxHashPassword.UseVisualStyleBackColor = true;
             // 
             // LogonForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(390, 348);
+            this.ClientSize = new System.Drawing.Size(619, 413);
+            this.Controls.Add(this.checkBoxHashPassword);
+            this.Controls.Add(this.labelDomain);
+            this.Controls.Add(this.textBoxDomainName);
             this.Controls.Add(this.textBoxLog);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
@@ -143,6 +175,9 @@
         private System.Windows.Forms.Button buttonOK;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.RichTextBox textBoxLog;
+        private System.Windows.Forms.Label labelDomain;
+        private System.Windows.Forms.TextBox textBoxDomainName;
+        private System.Windows.Forms.CheckBox checkBoxHashPassword;
     }
 }
 
