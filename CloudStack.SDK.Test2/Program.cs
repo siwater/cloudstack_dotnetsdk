@@ -12,7 +12,7 @@ namespace CloudStack.SDK.Test2 {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LogonForm());
+            Application.Run(new MainForm());
         }
     }
 }
