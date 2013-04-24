@@ -41,7 +41,7 @@ namespace CloudStack.SDK
     {
         #region Fields
         /// <summary>
-        /// Default rate at whci the SDK will poll for async job resulst etc.
+        /// Default rate at which the SDK will poll for async job resulst etc.
         /// </summary>
         private readonly TimeSpan DefaultPollRate = TimeSpan.FromSeconds(2);
 
@@ -49,6 +49,11 @@ namespace CloudStack.SDK
         /// Default timeout for HTTP requests to the API server
         /// </summary>
         private readonly TimeSpan DefaultRequestTimeout = TimeSpan.FromMinutes(2);
+
+        /// <summary>
+        /// Unix time starts January 1st 1970
+        /// </summary>
+        private DateTime UnixBaseTime = new DateTime(1970, 1, 1);
 
         private string apiKey;
 
@@ -71,7 +76,7 @@ namespace CloudStack.SDK
         /// </summary>
         /// <param name="apiUrl">Url for CloudStack API, e.g. http://myserver.cloud.com/client/api</param>
         /// <param name="apiKey">API Key (not user name)</param>
-        /// <param name="secretKey">secret key (not password)</param>
+        /// <param name="ssoKey">secret key (not password)</param>
         /// <param name="requestTimeout">timeout for HTTP requests to API server</param>
         /// <param name="pollRate">Rate to query for aync job completion</param>
         /// <remarks>
@@ -93,7 +98,7 @@ namespace CloudStack.SDK
         /// </summary>
         /// <param name="apiUrl">Url for CloudStack API</param>
         /// <param name="apiKey">API Key (not the account id)</param>
-        /// <param name="secretKey">secret key (not the account password)</param>
+        /// <param name="ssoKey">secret key (not the account password)</param>
         public Client(Uri apiUrl, string apiKey, SecureString secretKey) :
             this(apiUrl, apiKey, secretKey, TimeSpan.Zero, TimeSpan.Zero)
         {
@@ -104,7 +109,7 @@ namespace CloudStack.SDK
         /// </summary>
         /// <param name="apiUrl">Url for CloudStack API</param>
         /// <param name="apiKey">API Key (not the account id)</param>
-        /// <param name="secretKey">secret key (not the account password)</param>
+        /// <param name="ssoKey">secret key (not the account password)</param>
         public Client(Uri apiUrl, string apiKey, string secretKey) :
             this(apiUrl, apiKey, CreateSecureString(secretKey), TimeSpan.Zero, TimeSpan.Zero)
         {
@@ -180,12 +185,12 @@ namespace CloudStack.SDK
 
         /// <summary>
         /// An alternative authentication mechanism for the Cloudstack API requires the user to login (username/password) rather than
-        /// use the apiKey/secureKey combination. If apiKey and secretKey are present in the client session they will be used in
+        /// use the apiKey/secureKey combination. If apiKey and ssoKey are present in the client session they will be used in
         /// preference to this mechanism.
         /// </summary>
         /// <param name="userName">CloudStack user name</param>
         /// <param name="password">ClousStack password</param>
-        /// <param name="domainName">Optional CloudStack domain (may be null for root domain)</param>
+        /// <param name="domainName">Optional CloudStack domainName (may be null for root domainName)</param>
         /// <param name="hashPassword">Should an MD5 hash of the password be sent</param>
         public void Login(string userName, string password, string domainName, bool hashPassword)
         {
@@ -202,16 +207,52 @@ namespace CloudStack.SDK
 
         /// <summary>
         /// An alternative authentication mechanism for the Cloudstack API requires the user to login (username/password) rather than
-        /// use the apiKey/secureKey combination. If apiKey and secretKey are present in the client session they will be used in
+        /// use the apiKey/secureKey combination. If apiKey and ssoKey are present in the client session they will be used in
         /// preference to this mechanism.
         /// </summary>
         /// <param name="userName">CloudStack user name</param>
         /// <param name="password">ClousStack password</param>
-        /// <param name="domain">Optional CloudStack domain (may be null for root domain)</param>
+        /// <param name="domainName">Optional CloudStack domain name (may be null for root domain)</param>
         /// <param name="hashPassword">Should an MD5 hash of the password be sent</param>
-        public void Login(string userName, SecureString password, string domain, bool hashPassword) {
-            this.Login(userName, SecureStringToString(password), domain, hashPassword);
+        public void Login(string userName, SecureString password, string domainName, bool hashPassword) {
+            this.Login(userName, SecureStringToString(password), domainName, hashPassword);
         }
+
+        /// <summary>
+        /// CloudStack single sign on support, using a name/domain combination and the single sign on key.
+        /// </summary>
+        /// <param name="userName">User name</param>
+        /// <param name="ssoKey">security.singlesignon.key</param>
+        /// <param name="domainName">optional domain name (defaults to ROOT domain)</param>
+        public void LoginWithSso(string userName, string ssoKey, string domainName) {
+            this.cookieContainer = new CookieContainer();
+            APIRequest request = new APIRequest("login");
+            request.Parameters["username"] = userName;
+            request.Parameters["timestamp"] = (DateTime.UtcNow - UnixBaseTime).TotalMilliseconds.ToString("F0");
+            if (!string.IsNullOrEmpty(domainName)) {
+                request.Parameters["domain"] = domainName;
+            }
+            XDocument response = this.SendRequest(request, CreateSecureString(ssoKey), null);
+            this.sessionKey = response.Element("loginresponse").Element("sessionkey").Value;       
+        }
+
+        /// <summary>
+        /// Use this ImpersonationContext when creating resources
+        /// </summary>
+        public Client Impersonate(ImpersonationContext impersonationContext) {
+            Client copy = this.MemberwiseClone() as Client;
+            copy.ImpersonationContext = impersonationContext;
+            return copy;
+        }
+
+        /// <summary>
+        /// LoginWithSso this account/domainName when creating resources
+        /// </summary>
+        public Client Impersonate(string account, string domainId) {
+            return this.Impersonate(new ImpersonationContext(account, domainId));
+        }
+        
+
 
         public void Logout()
         {
@@ -231,7 +272,7 @@ namespace CloudStack.SDK
         /// Produces a query string with an optional signature from arguments in key/value string form.
         /// </summary>
         /// <param name="arguments">Command in terms of key/value pairs</param>
-        /// <param name="secretKey">Optional secret key if the query is to be signed</param>
+        /// <param name="ssoKey">Optional secret key if the query is to be signed</param>
         /// <returns>Http query string including the signature.</returns>
         /// <remarks>
         /// Reference:  
@@ -266,7 +307,7 @@ namespace CloudStack.SDK
         /// Calculates a HMAC SHA-1 hash of the supplied string.
         /// </summary>
         /// <param name="toSign">String to sign</param>
-        /// <param name="secretKey">Signing private key</param>
+        /// <param name="ssoKey">Signing private key</param>
         /// <returns>HMAC SHA-1 signature</returns>     
         public static string CalcSignature(string toSign, SecureString secretKey)
         {
@@ -393,29 +434,34 @@ namespace CloudStack.SDK
                 }
             }
 
-            string queryString = CreateQuery(request.Parameters, this.secretKey, this.sessionKey);
+            return SendRequest(request, this.secretKey, this.sessionKey);
+        }
+
+        /// <summary>
+        /// This method will convert the APIRequest into an Http query, either signed by the secret key (if present)
+        /// or accompanied by the sessionkey. The query is sent to the ApiAddress and the resulting document returned.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="ssoKey"></param>
+        /// <param name="sessionKey"></param>
+        /// <returns></returns>
+        private XDocument SendRequest(APIRequest request, SecureString secretKey, string sessionKey) {
+            string queryString = CreateQuery(request.Parameters, secretKey, sessionKey);
             Uri fullUri = new Uri(string.Format(CultureInfo.InvariantCulture, "{0}?{1}", this.ApiAddress, queryString));
-            
+
             HttpWebRequest httpWebRequest = WebRequest.Create(fullUri) as HttpWebRequest;
             httpWebRequest.CookieContainer = cookieContainer;
             httpWebRequest.Timeout = (int)this.HttpRequestTimeout.TotalMilliseconds;
 
-            try
-            {
+            try {
                 httpWebRequest.Method = "GET";
-                using (HttpWebResponse httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse)
-                {
-                    using (Stream respStrm = httpWebResponse.GetResponseStream())
-                    {
+                using (HttpWebResponse httpWebResponse = httpWebRequest.GetResponse() as HttpWebResponse) {
+                    using (Stream respStrm = httpWebResponse.GetResponseStream()) {
                         respStrm.ReadTimeout = (int)this.HttpRequestTimeout.TotalMilliseconds;
-                        using (StreamReader streamReader = new StreamReader(respStrm, Encoding.UTF8))
-                        {
-                            try
-                            {
+                        using (StreamReader streamReader = new StreamReader(respStrm, Encoding.UTF8)) {
+                            try {
                                 return XDocument.Load(streamReader);
-                            }
-                            catch (System.Xml.XmlException xmlEx)
-                            {
+                            } catch (System.Xml.XmlException xmlEx) {
                                 throw new CloudStackException(
                                     "Error parsing API response",
                                     fullUri.ToString(),
@@ -426,31 +472,12 @@ namespace CloudStack.SDK
                         }
                     }
                 }
-            }
-            catch (WebException e)
-            {
+            } catch (WebException e) {
                 throw CreateCloudStackException(e, fullUri);
             }
         }
 
-        /// <summary>
-        /// Use this ImpersonationContext when creating resources
-        /// </summary>
-        public Client Impersonate(ImpersonationContext impersonationContext)
-        {
-            Client copy = this.MemberwiseClone() as Client;
-            copy.ImpersonationContext = impersonationContext;
-            return copy;
-        }
-
-        /// <summary>
-        /// Impersonate this account/domain when creating resources
-        /// </summary>
-        public Client Impersonate(string account, string domainId)
-        {
-            return this.Impersonate(new ImpersonationContext(account, domainId));
-        }
-        
+   
         #endregion
 
         #region IDisposable Members

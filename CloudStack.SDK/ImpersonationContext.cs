@@ -42,7 +42,7 @@ namespace CloudStack.SDK
         public string Account { get; private set; }
 
         /// <summary>
-        /// Impersonated domain identifier
+        /// Impersonated domainName identifier
         /// </summary>
         public string DomainId { get; private set; }
     }
