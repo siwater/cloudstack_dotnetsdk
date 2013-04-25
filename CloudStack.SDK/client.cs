@@ -116,6 +116,20 @@ namespace CloudStack.SDK
         }
 
         /// <summary>
+        /// Initializes a new instance of the Client class.  
+        /// </summary>
+        /// <param name="apiUrl">Url for CloudStack API</param>
+        /// <param name="sessionKey">session key</param>
+        /// <param name="sessionCookie">session cookie)</param>
+        public Client(Uri apiUrl, string sessionKey, Cookie  sessionCookie) :
+            this(apiUrl) 
+        { 
+            this.sessionKey = sessionKey;
+            this.cookieContainer = new CookieContainer();
+            this.cookieContainer.Add(sessionCookie);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the Client class. 
         /// </summary>
         /// <param name="apiUrl"></param>
@@ -173,6 +187,16 @@ namespace CloudStack.SDK
             get;
             private set;
         }
+
+        public string SessionKey { get { return this.sessionKey; } }
+
+        public CookieCollection Cookies
+        {
+            get
+            {
+                return (cookieContainer == null) ? null : cookieContainer.GetCookies(this.ApiAddress);
+            }
+         }
 
         /// <summary>
         /// Get the Impersonation context in use in the current session

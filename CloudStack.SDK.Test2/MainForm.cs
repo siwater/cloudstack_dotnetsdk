@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
@@ -83,6 +84,47 @@ namespace CloudStack.SDK.Test2
             }
         }
 
+        private void cloneSessionToolStripMenuItem_Click(object sender, EventArgs e) {
+            if ((client == null) ||
+                string.IsNullOrEmpty(client.SessionKey) ||
+                (client.Cookies == null)) {
+                MessageBox.Show(
+                    "You must first login or SSO to CloudStack to create a session to clone",
+                    "No Session",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            string sessionKey = client.SessionKey;
+            CookieCollection cookies = client.Cookies;
+            Cookie jsessionId = getSessionCookie(client.Cookies);
+            if (jsessionId == null) {
+                MessageBox.Show(
+                    "No session cookie was found - unable to clone session",
+                    "No Session",
+                    MessageBoxButtons.OK);
+                return;
+            }
+            Cookie newCookie = new Cookie(jsessionId.Name, jsessionId.Value);
+            newCookie.Domain = jsessionId.Domain;
+            newCookie.Path = jsessionId.Path;
+            client = new Client(client.ApiAddress, sessionKey, newCookie);
+            MessageBox.Show(
+                "You session has been replaced with a clone using JSESSIONID cookie and sessionKey",
+                "Cloned Session",
+                MessageBoxButtons.OK);
+        }
+
+        private Cookie getSessionCookie(CookieCollection cookies) {
+            if (cookies != null) {
+                foreach (Cookie c in cookies) {
+                    if (c.Name == "JSESSIONID") {
+                        return c;
+                    }
+                }
+            }
+            return null;
+        }
+
         private void UpdateCurentUser(string text) {
             this.labelCurrentUser.Text = text;
         }
@@ -112,8 +154,6 @@ namespace CloudStack.SDK.Test2
             }
             return true;
         }
-
- 
 
 
         #region Logging
@@ -157,6 +197,8 @@ namespace CloudStack.SDK.Test2
         }
 
         #endregion
+
+ 
 
    
 

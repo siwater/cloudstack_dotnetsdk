@@ -40,6 +40,7 @@
             this.buttonClearLog = new System.Windows.Forms.Button();
             this.labelLoggedOnAs = new System.Windows.Forms.Label();
             this.labelCurrentUser = new System.Windows.Forms.Label();
+            this.cloneSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +94,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -103,7 +104,8 @@
             this.loginToolStripMenuItem,
             this.ssoToolStripMenuItem,
             this.logoutToolStripMenuItem,
-            this.useAPIKeysToolStripMenuItem});
+            this.useAPIKeysToolStripMenuItem,
+            this.cloneSessionToolStripMenuItem});
             this.commandToolStripMenuItem.Name = "commandToolStripMenuItem";
             this.commandToolStripMenuItem.Size = new System.Drawing.Size(89, 20);
             this.commandToolStripMenuItem.Text = "Authentication";
@@ -111,28 +113,28 @@
             // loginToolStripMenuItem
             // 
             this.loginToolStripMenuItem.Name = "loginToolStripMenuItem";
-            this.loginToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.loginToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loginToolStripMenuItem.Text = "Login";
             this.loginToolStripMenuItem.Click += new System.EventHandler(this.logonToolStripMenuItem_Click);
             // 
             // ssoToolStripMenuItem
             // 
             this.ssoToolStripMenuItem.Name = "ssoToolStripMenuItem";
-            this.ssoToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.ssoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ssoToolStripMenuItem.Text = "Single Sign On";
             this.ssoToolStripMenuItem.Click += new System.EventHandler(this.ssoToolStripMenuItem_Click);
             // 
             // logoutToolStripMenuItem
             // 
             this.logoutToolStripMenuItem.Name = "logoutToolStripMenuItem";
-            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.logoutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.logoutToolStripMenuItem.Text = "Logout";
             this.logoutToolStripMenuItem.Click += new System.EventHandler(this.logOffToolStripMenuItem_Click);
             // 
             // useAPIKeysToolStripMenuItem
             // 
             this.useAPIKeysToolStripMenuItem.Name = "useAPIKeysToolStripMenuItem";
-            this.useAPIKeysToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.useAPIKeysToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.useAPIKeysToolStripMenuItem.Text = "Use API Keys";
             this.useAPIKeysToolStripMenuItem.Click += new System.EventHandler(this.useAPIKeysToolStripMenuItem_Click);
             // 
@@ -190,6 +192,13 @@
             this.labelCurrentUser.TabIndex = 21;
             this.labelCurrentUser.Text = "Not logged on";
             // 
+            // cloneSessionToolStripMenuItem
+            // 
+            this.cloneSessionToolStripMenuItem.Name = "cloneSessionToolStripMenuItem";
+            this.cloneSessionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cloneSessionToolStripMenuItem.Text = "Clone Session";
+            this.cloneSessionToolStripMenuItem.Click += new System.EventHandler(this.cloneSessionToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -232,6 +241,7 @@
         private System.Windows.Forms.ToolStripMenuItem useAPIKeysToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem listZonesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cloneSessionToolStripMenuItem;
         
     }
 }
